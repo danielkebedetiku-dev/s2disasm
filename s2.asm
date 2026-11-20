@@ -37325,13 +37325,13 @@ Sonic_LevelBound:
 	move.w	#1,(Level_Inactive_flag).w
 .checkGhost:
 	tst.b	($FFFFFE60).w
-	beq.s	.notGhost
+	beq.w	Ghost_End_Skip
 	move.w	#$0EEE,($FFFFFB04).w
 	move.w	#$0CCC,($FFFFFB06).w
 	move.w	#$0AAA,($FFFFFB08).w
 	move.w	#$0888,($FFFFFB0A).w
 	cmpi.w	#$2600,d1
-	blo.w	.notGhost
+	blo.w	Ghost_End_Skip
 	clr.w	x_vel(a0)
 	clr.w	y_vel(a0)
 	clr.w	inertia(a0)
@@ -37352,7 +37352,7 @@ Sonic_LevelBound:
 	move.w	d2,($FFFFB800+x_pos).w
 	move.w	y_pos(a0),($FFFFB800+y_pos).w
 	cmpi.w	#$2600,d1
-	blo.w	.notGhost
+	blo.w	Ghost_End_Skip
 	clr.w	x_vel(a0)
 	clr.w	y_vel(a0)
 	clr.w	inertia(a0)
@@ -92252,6 +92252,6 @@ EndOfRom:
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
-ly (WARNING: don't rename, move or remove these labels!)
+n't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
