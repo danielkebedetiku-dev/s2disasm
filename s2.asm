@@ -4826,7 +4826,7 @@ Level_ClrRam:
 	clearRAM CNZ_saucer_data,CNZ_saucer_data_End+$C0	; clear CNZ saucer RAM (and way more than necessary)
     endif
 
-	cmpi.w	#chemical_plant_zone_act_2,(Current_ZoneAndAct).w	; is this CPZ2?
+	cmpi.w	#death_egg_zone_act_1,(Current_ZoneAndAct).w	; is this CPZ2?
 	beq.s	Level_InitWater					; if yes, branch
 	cmpi.b	#aquatic_ruin_zone,(Current_Zone).w		; is this ARZ?
 	beq.s	Level_InitWater					; if yes, branch
@@ -5208,10 +5208,10 @@ Level_SetPlayerMode:
 	beq.s	+			; if yes, branch
 	tst.w	(Two_player_mode).w	; 2P mode?
 	bne.s	+			; if yes, branch
-	move.w	(Player_option).w,(Player_mode).w ; use the option chosen in the Options screen
+	move.w	#1,(Player_mode).w
 	rts
 +
-	move.w	#0,(Player_mode).w	; force Sonic and Tails
+	move.w	#1,(Player_mode).w
 	rts
 ; End of function Level_SetPlayerMode
 
@@ -6181,7 +6181,7 @@ SetLevelEndType:
 	nosignpost.w oil_ocean_zone_act_2
 	nosignpost.s mystic_cave_zone_act_2
 	nosignpost.s casino_night_zone_act_2
-	nosignpost.s chemical_plant_zone_act_2
+	nosignpost.s death_egg_zone_act_1
 	nosignpost.s death_egg_zone_act_1
 	nosignpost.s aquatic_ruin_zone_act_2
 	nosignpost.s sky_chase_zone_act_1
@@ -12583,7 +12583,7 @@ LevelSelect_Order:
 	dc.w	emerald_hill_zone_act_1
 	dc.w	emerald_hill_zone_act_2	; 1
 	dc.w	chemical_plant_zone_act_1	; 2
-	dc.w	chemical_plant_zone_act_2	; 3
+	dc.w	death_egg_zone_act_1	; 3
 	dc.w	aquatic_ruin_zone_act_1	; 4
 	dc.w	aquatic_ruin_zone_act_2	; 5
 	dc.w	casino_night_zone_act_1	; 6
@@ -28147,7 +28147,7 @@ LevelOrder: zoneOrderedTable 2,2	; WrdArr_LevelOrder
 	zoneTableEntry.w  casino_night_zone_act_2	; Act 1
 	zoneTableEntry.w  hill_top_zone_act_1		; Act 2
 	; CPZ
-	zoneTableEntry.w  chemical_plant_zone_act_2	; Act 1
+	zoneTableEntry.w  death_egg_zone_act_1	; Act 1
 	zoneTableEntry.w  aquatic_ruin_zone_act_1	; Act 2
 	; DEZ
 	zoneTableEntry.w  -1				; Act 1
@@ -28202,7 +28202,7 @@ LevelOrder_2P: zoneOrderedTable 2,2	; WrdArr_LevelOrder_2P
 	zoneTableEntry.w  casino_night_zone_act_2	; Act 1
 	zoneTableEntry.w  mystic_cave_zone_act_1	; Act 2
 	; CPZ
-	zoneTableEntry.w  chemical_plant_zone_act_2 	; Act 1
+	zoneTableEntry.w  death_egg_zone_act_1 	; Act 1
 	zoneTableEntry.w  aquatic_ruin_zone_act_1	; Act 2
 	; DEZ
 	zoneTableEntry.w  -1				; Act 1
