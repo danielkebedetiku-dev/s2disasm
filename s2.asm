@@ -37335,7 +37335,6 @@ Sonic_LevelBound:
 	clr.w	x_vel(a0)
 	clr.w	y_vel(a0)
 	clr.w	inertia(a0)
-	move.b	#1,(Ctrl_1_locked).w
 	clr.w	(Ctrl_1_Held_Logical).w
 	move.b	#5,anim(a0)
 	move.w	x_pos(a0),(Camera_Max_X_pos).w
@@ -37357,7 +37356,6 @@ Sonic_LevelBound:
 	clr.w	x_vel(a0)
 	clr.w	y_vel(a0)
 	clr.w	inertia(a0)
-	move.b	#1,(Ctrl_1_locked).w
 	clr.w	(Ctrl_1_Held_Logical).w
 	move.b	#5,anim(a0)
 	move.w	x_pos(a0),(Camera_Max_X_pos).w
@@ -37379,7 +37377,6 @@ Sonic_LevelBound:
 	clr.w	x_vel(a0)
 	clr.w	y_vel(a0)
 	clr.w	inertia(a0)
-	move.b	#1,(Ctrl_1_locked).w
 	clr.w	(Ctrl_1_Held_Logical).w
 	move.b	#5,anim(a0)
 	move.w	x_pos(a0),(Camera_Max_X_pos).w
@@ -92253,5 +92250,8 @@ EndOfRom:
 		message "ROM size is $\{EndOfRom-StartOfRom} bytes (\{(EndOfRom-StartOfRom)/1024.0} KiB). About $\{paddingSoFar} bytes are padding. "
 	endif
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
+	shared movewZ80CompSize
+	END
+ly (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
