@@ -1,0 +1,14 @@
+name: Build Sonic 2 ROM
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ROM
+        run: chmod +x build.sh && ./build.sh
+      - name: Upload ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: Friendship-Demake-ROM
+          path: s2built.bin
