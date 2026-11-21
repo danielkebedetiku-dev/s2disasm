@@ -37393,7 +37393,7 @@ Sonic_LevelBound:
 	addi.w	#44,d2
 	move.w	d2,($FFFFB800+x_pos).w
 	move.w	y_pos(a0),($FFFFB800+y_pos).w
-.notGhost:
+Ghost_End_Skip:
 	move.w	(Camera_Min_X_pos).w,d0
 	addi.w	#$10,d0
 	cmp.w	d1,d0			; has Sonic touched the left boundary?
@@ -92252,6 +92252,6 @@ EndOfRom:
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
-n't rename, move or remove these labels!)
+ename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
