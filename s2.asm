@@ -37307,6 +37307,7 @@ Sonic_LevelBound:
 	asl.l	#8,d0
 	add.l	d0,d1
 	swap	d1
+	move.w	#1,(Player_option).w
 	cmpi.w	#chemical_plant_zone_act_1,(Current_ZoneAndAct).w
 	bne.s	.notCPZShort
 	cmpi.w	#$1000,d1
@@ -37319,32 +37320,42 @@ Sonic_LevelBound:
 	bne.s	.checkGhost
 	cmpi.w	#$0500,d1
 	blo.s	.checkGhost
-	move.b	#1,($FFFFFE60).w
+	move.b	#1,($FFFFF660).w
 	move.w	#emerald_hill_zone_act_1,(Current_ZoneAndAct).w
 	clr.b	(Last_star_pole_hit).w
 	move.w	#1,(Level_Inactive_flag).w
 .checkGhost:
-	tst.b	($FFFFFE60).w
+	tst.b	($FFFFF660).w
 	beq.w	Ghost_End_Skip
 	move.w	#$0EEE,($FFFFFB04).w
 	move.w	#$0CCC,($FFFFFB06).w
 	move.w	#$0AAA,($FFFFFB08).w
 	move.w	#$0888,($FFFFFB0A).w
+	move.w	#$0200,($FFFFFB60).w
+	move.w	#$0020,($FFFFFB42).w
+	move.w	#$0040,($FFFFFB44).w
 	cmpi.w	#$2600,d1
 	blo.w	Ghost_End_Skip
 	clr.w	x_vel(a0)
 	clr.w	y_vel(a0)
 	clr.w	inertia(a0)
+	bclr	#1,status(a0)
 	clr.w	(Ctrl_1_Held_Logical).w
 	move.b	#5,anim(a0)
+	move.b	#4,($FFFFB040+routine).w
+	move.b	#$1A,($FFFFB040+anim).w
+	clr.b	($FFFFB080).w
+	tst.b	($FFFFF661).w
+	bne.w	Ghost_End_Skip
+	move.b	#1,($FFFFF661).w
 	move.w	x_pos(a0),(Camera_Max_X_pos).w
 	move.b	#$02,($FFFFB040).w
 	move.w	d1,d2
 	subi.w	#36,d2
 	move.w	d2,($FFFFB040+x_pos).w
-	move.w	y_pos(a0),($FFFFB040+y_pos).w
-	move.b	#$1A,($FFFFB040+anim).w
-	move.w	#$7FFF,(Tails_control_counter).w
+	move.w	y_pos(a0),d3
+	addi.w	#10,d3
+	move.w	d3,($FFFFB040+y_pos).w
 	move.b	#$C6,($FFFFB800).w
 	move.b	#$A4,($FFFFB800+subtype).w
 	move.w	d1,d2
@@ -92210,12 +92221,7 @@ EndOfRom:
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
-und/sfx/E7 - Drawbridge Move.asm"
-Sound68:	include "sound/sfx/E8 - Quick Door Slam.asm"
-Sound69:	include "sound/sfx/E9 - Drawbridge Down.asm"
-Sound6A:	include "sound/sfx/EA - Laser Burst.asm"
-Sound6B:	include "sound/sfx/EB - Scatter.asm"
-Sound6C:	include "sound/sfx/EC - Teleport.asm"
+	include "sound/sfx/EC - Teleport.asm"
 Sound6D:	include "sound/sfx/ED - Error.asm"
 Sound6E:	include "sound/sfx/EE - Mecha Sonic Buzz.asm"
 Sound6F:	include "sound/sfx/EF - Large Laser.asm"
