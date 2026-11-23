@@ -5233,7 +5233,7 @@ InitPlayers:
 	cmpi.b	#sky_chase_zone,(Current_Zone).w
 	beq.s	+ ; skip loading Tails if this is SCZ
 
-	move.b	#ObjID_Tails,(Sidekick+id).w ; load Obj02 Tails object at $FFFFB040
+	move.b	#$02,(Sidekick+id).w ; load Obj02 Tails object at $FFFFB040
 	move.w	(MainCharacter+x_pos).w,(Sidekick+x_pos).w
 	move.w	(MainCharacter+y_pos).w,(Sidekick+y_pos).w
 	subi.w	#$20,(Sidekick+x_pos).w
@@ -5253,7 +5253,7 @@ InitPlayers_Alone: ; either Sonic or Tails but not both
 ; ===========================================================================
 ; loc_44D0:
 InitPlayers_TailsAlone:
-	move.b	#ObjID_Tails,(MainCharacter+id).w ; load Obj02 Tails object at $FFFFB000
+	move.b	#$02,(MainCharacter+id).w ; load Obj02 Tails object at $FFFFB000
 	move.b	#ObjID_SpindashDust,(Tails_Dust+id).w ; load Obj08 Tails' spindash dust/splash object at $FFFFD100
 	addi_.w	#4,(MainCharacter+y_pos).w
 	rts
@@ -6673,7 +6673,7 @@ SpecialStage:
 	move.b	#ObjID_SonicSS,(MainCharacter+id).w ; load Obj09 (special stage Sonic)
 	tst.w	(Player_mode).w		; is this a Sonic and Tails game?
 	bne.s	++			; if not, branch
-+	move.b	#ObjID_TailsSS,(Sidekick+id).w ; load Obj10 (special stage Tails)
++	move.b	#$02SS,(Sidekick+id).w ; load Obj10 (special stage Tails)
 +	move.b	#ObjID_SSHUD,(SpecialStageHUD+id).w ; load Obj5E (special stage HUD)
 	move.b	#ObjID_StartBanner,(SpecialStageStartBanner+id).w ; load Obj5F (special stage banner)
 	move.b	#ObjID_SSNumberOfRings,(SpecialStageNumberOfRings+id).w ; load Obj87 (special stage ring count)
@@ -13498,9 +13498,9 @@ loc_A2EE:
 
 loc_A2F2:
 	moveq	#$E,d0
-	move.b	#ObjID_Tails,id(a1) ; load Tails object
+	move.b	#$02,id(a1) ; load Tails object
 	move.b	#$81,obj_control(a1)
-	move.b	#ObjID_TailsTails,(Tails_Tails_Cutscene+id).w ; load Obj05 (Tails' tails) at $FFFFB080
+	move.b	#$02Tails,(Tails_Tails_Cutscene+id).w ; load Obj05 (Tails' tails) at $FFFFB080
 	move.w	a1,(Tails_Tails_Cutscene+parent).w
 	rts
 ; ===========================================================================
@@ -18204,7 +18204,7 @@ ScrollVerti:
 	; rolling, and vice versa. Not even Sonic 3 & Knuckles fixed this.
 	; To fix this, just adjust the subtraction to suit Tails (who is four
 	; pixels shorter).
-	cmpi.b	#ObjID_Tails,id(a0)
+	cmpi.b	#$02,id(a0)
 	bne.s	.notRolling
 	addq.w	#4,d0
     endif
@@ -37338,49 +37338,7 @@ Sonic_LevelBound:
 	clr.w	(Ctrl_1_Held_Logical).w
 	move.b	#5,anim(a0)
 	move.w	x_pos(a0),(Camera_Max_X_pos).w
-	move.b	#ObjID_Tails,($FFFFB040).w
-	move.w	d1,d2
-	subi.w	#36,d2
-	move.w	d2,($FFFFB040+x_pos).w
-	move.w	y_pos(a0),($FFFFB040+y_pos).w
-	move.b	#$1A,($FFFFB040+anim).w
-	move.w	#$7FFF,(Tails_control_counter).w
-	move.b	#$C6,($FFFFB800).w
-	move.b	#$A4,($FFFFB800+subtype).w
-	move.w	d1,d2
-	addi.w	#44,d2
-	move.w	d2,($FFFFB800+x_pos).w
-	move.w	y_pos(a0),($FFFFB800+y_pos).w
-	cmpi.w	#$2600,d1
-	blo.w	Ghost_End_Skip
-	clr.w	x_vel(a0)
-	clr.w	y_vel(a0)
-	clr.w	inertia(a0)
-	clr.w	(Ctrl_1_Held_Logical).w
-	move.b	#5,anim(a0)
-	move.w	x_pos(a0),(Camera_Max_X_pos).w
-	move.b	#ObjID_Tails,($FFFFB040).w
-	move.w	d1,d2
-	subi.w	#36,d2
-	move.w	d2,($FFFFB040+x_pos).w
-	move.w	y_pos(a0),($FFFFB040+y_pos).w
-	move.b	#$1A,($FFFFB040+anim).w
-	move.w	#$7FFF,(Tails_control_counter).w
-	move.b	#$C6,($FFFFB800).w
-	move.b	#$A4,($FFFFB800+subtype).w
-	move.w	d1,d2
-	addi.w	#44,d2
-	move.w	d2,($FFFFB800+x_pos).w
-	move.w	y_pos(a0),($FFFFB800+y_pos).w
-	cmpi.w	#$2600,d1
-	blo.w	.notGhost
-	clr.w	x_vel(a0)
-	clr.w	y_vel(a0)
-	clr.w	inertia(a0)
-	clr.w	(Ctrl_1_Held_Logical).w
-	move.b	#5,anim(a0)
-	move.w	x_pos(a0),(Camera_Max_X_pos).w
-	move.b	#ObjID_Tails,($FFFFB040).w
+	move.b	#$02,($FFFFB040).w
 	move.w	d1,d2
 	subi.w	#36,d2
 	move.w	d2,($FFFFB040+x_pos).w
@@ -39099,7 +39057,7 @@ Obj02_Init_Continued:
 	move.w	#0,(Tails_CPU_routine).w	; set AI state to TailsCPU_Init
 	move.w	#0,(Tails_control_counter).w
 	move.w	#0,(Tails_respawn_counter).w
-	move.b	#ObjID_TailsTails,(Tails_Tails+id).w ; load Obj05 (Tails' Tails) at $FFFFD000
+	move.b	#$02Tails,(Tails_Tails+id).w ; load Obj05 (Tails' Tails) at $FFFFD000
 	move.w	a0,(Tails_Tails+parent).w ; set its parent object to this
 
 ; ---------------------------------------------------------------------------
@@ -92224,6 +92182,35 @@ Sound64:	include "sound/sfx/E4 - HTZ Lift Click.asm"
 Sound65:	include "sound/sfx/E5 - Leaves.asm"
 Sound66:	include "sound/sfx/E6 - Mega Mack Drop.asm"
 Sound67:	include "sound/sfx/E7 - Drawbridge Move.asm"
+Sound68:	include "sound/sfx/E8 - Quick Door Slam.asm"
+Sound69:	include "sound/sfx/E9 - Drawbridge Down.asm"
+Sound6A:	include "sound/sfx/EA - Laser Burst.asm"
+Sound6B:	include "sound/sfx/EB - Scatter.asm"
+Sound6C:	include "sound/sfx/EC - Teleport.asm"
+Sound6D:	include "sound/sfx/ED - Error.asm"
+Sound6E:	include "sound/sfx/EE - Mecha Sonic Buzz.asm"
+Sound6F:	include "sound/sfx/EF - Large Laser.asm"
+Sound70:	include "sound/sfx/F0 - Oil Slide.asm"
+
+	finishBank
+
+; end of 'ROM'
+	if padToPowerOfTwo && (*-StartOfRom)&(*-StartOfRom-1)
+		cnop	-1,2<<lastbit(*-StartOfRom-1)
+		dc.b	$00
+paddingSoFar	:= paddingSoFar+1
+	else
+		even
+	endif
+EndOfRom:
+	if MOMPASS=2
+		; "About" because it will be off by the same amount that Size_of_Snd_driver_guess is incorrect (if you changed it), and because I may have missed a small amount of internal padding somewhere
+		message "ROM size is $\{EndOfRom-StartOfRom} bytes (\{(EndOfRom-StartOfRom)/1024.0} KiB). About $\{paddingSoFar} bytes are padding. "
+	endif
+	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
+	shared movewZ80CompSize
+	END
+7:	include "sound/sfx/E7 - Drawbridge Move.asm"
 Sound68:	include "sound/sfx/E8 - Quick Door Slam.asm"
 Sound69:	include "sound/sfx/E9 - Drawbridge Down.asm"
 Sound6A:	include "sound/sfx/EA - Laser Burst.asm"
