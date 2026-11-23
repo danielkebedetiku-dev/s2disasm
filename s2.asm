@@ -6673,7 +6673,7 @@ SpecialStage:
 	move.b	#ObjID_SonicSS,(MainCharacter+id).w ; load Obj09 (special stage Sonic)
 	tst.w	(Player_mode).w		; is this a Sonic and Tails game?
 	bne.s	++			; if not, branch
-+	move.b	#$02SS,(Sidekick+id).w ; load Obj10 (special stage Tails)
++	move.b	#$02,(Sidekick+id).w ; load Obj10 (special stage Tails)
 +	move.b	#ObjID_SSHUD,(SpecialStageHUD+id).w ; load Obj5E (special stage HUD)
 	move.b	#ObjID_StartBanner,(SpecialStageStartBanner+id).w ; load Obj5F (special stage banner)
 	move.b	#ObjID_SSNumberOfRings,(SpecialStageNumberOfRings+id).w ; load Obj87 (special stage ring count)
@@ -13500,7 +13500,7 @@ loc_A2F2:
 	moveq	#$E,d0
 	move.b	#$02,id(a1) ; load Tails object
 	move.b	#$81,obj_control(a1)
-	move.b	#$02Tails,(Tails_Tails_Cutscene+id).w ; load Obj05 (Tails' tails) at $FFFFB080
+	move.b	#ObjID_TailsTails,(Tails_Tails_Cutscene+id).w ; load Obj05 (Tails' tails) at $FFFFB080
 	move.w	a1,(Tails_Tails_Cutscene+parent).w
 	rts
 ; ===========================================================================
@@ -39057,7 +39057,7 @@ Obj02_Init_Continued:
 	move.w	#0,(Tails_CPU_routine).w	; set AI state to TailsCPU_Init
 	move.w	#0,(Tails_control_counter).w
 	move.w	#0,(Tails_respawn_counter).w
-	move.b	#$02Tails,(Tails_Tails+id).w ; load Obj05 (Tails' Tails) at $FFFFD000
+	move.b	#ObjID_TailsTails,(Tails_Tails+id).w ; load Obj05 (Tails' Tails) at $FFFFD000
 	move.w	a0,(Tails_Tails+parent).w ; set its parent object to this
 
 ; ---------------------------------------------------------------------------
@@ -92210,7 +92210,7 @@ EndOfRom:
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
-7:	include "sound/sfx/E7 - Drawbridge Move.asm"
+und/sfx/E7 - Drawbridge Move.asm"
 Sound68:	include "sound/sfx/E8 - Quick Door Slam.asm"
 Sound69:	include "sound/sfx/E9 - Drawbridge Down.asm"
 Sound6A:	include "sound/sfx/EA - Laser Burst.asm"
