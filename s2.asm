@@ -4570,13 +4570,13 @@ TitleScreen_CheckIfChose2P:
 	move.l	d0,(Got_Emeralds_array).w
 	move.l	d0,(Got_Emeralds_array+4).w
 
-	move.b	#GameModeID_Level,(Game_Mode).w
+	move.b	#GameModeID_2PLevelSelect,(Game_Mode).w ; => LevelSelectMenu2P
 	move.b	#0,(Current_Zone_2P).w
 	rts
 ; ---------------------------------------------------------------------------
 ; loc_3D20:
 TitleScreen_ChoseOptions:
-	move.b	#GameModeID_Level,(Game_Mode).w
+	move.b	#GameModeID_OptionsMenu,(Game_Mode).w ; => OptionsMenu
 	move.b	#0,(Options_menu_box).w
 	rts
 ; ===========================================================================
@@ -5233,7 +5233,7 @@ InitPlayers:
 	cmpi.b	#sky_chase_zone,(Current_Zone).w
 	beq.s	+ ; skip loading Tails if this is SCZ
 
-	move.b	#$02,(Sidekick+id).w ; load Obj02 Tails object at $FFFFB040
+	move.b	#ObjID_Tails,(Sidekick+id).w ; load Obj02 Tails object at $FFFFB040
 	move.w	(MainCharacter+x_pos).w,(Sidekick+x_pos).w
 	move.w	(MainCharacter+y_pos).w,(Sidekick+y_pos).w
 	subi.w	#$20,(Sidekick+x_pos).w
@@ -5253,7 +5253,7 @@ InitPlayers_Alone: ; either Sonic or Tails but not both
 ; ===========================================================================
 ; loc_44D0:
 InitPlayers_TailsAlone:
-	move.b	#$02,(MainCharacter+id).w ; load Obj02 Tails object at $FFFFB000
+	move.b	#ObjID_Tails,(MainCharacter+id).w ; load Obj02 Tails object at $FFFFB000
 	move.b	#ObjID_SpindashDust,(Tails_Dust+id).w ; load Obj08 Tails' spindash dust/splash object at $FFFFD100
 	addi_.w	#4,(MainCharacter+y_pos).w
 	rts
@@ -6673,7 +6673,7 @@ SpecialStage:
 	move.b	#ObjID_SonicSS,(MainCharacter+id).w ; load Obj09 (special stage Sonic)
 	tst.w	(Player_mode).w		; is this a Sonic and Tails game?
 	bne.s	++			; if not, branch
-+	move.b	#$02,(Sidekick+id).w ; load Obj10 (special stage Tails)
++	move.b	#ObjID_TailsSS,(Sidekick+id).w ; load Obj10 (special stage Tails)
 +	move.b	#ObjID_SSHUD,(SpecialStageHUD+id).w ; load Obj5E (special stage HUD)
 	move.b	#ObjID_StartBanner,(SpecialStageStartBanner+id).w ; load Obj5F (special stage banner)
 	move.b	#ObjID_SSNumberOfRings,(SpecialStageNumberOfRings+id).w ; load Obj87 (special stage ring count)
@@ -12562,7 +12562,7 @@ LevelSelect_PressStart:
 	move.l	d0,(Score_2P).w
 	move.l	#5000,(Next_Extra_life_score).w
 	move.l	#5000,(Next_Extra_life_score_2P).w
-	move.w	#1,(Player_mode).w
+	move.w	(Player_option).w,(Player_mode).w
 	rts
 ; ===========================================================================
 
@@ -13498,7 +13498,7 @@ loc_A2EE:
 
 loc_A2F2:
 	moveq	#$E,d0
-	move.b	#$02,id(a1) ; load Tails object
+	move.b	#ObjID_Tails,id(a1) ; load Tails object
 	move.b	#$81,obj_control(a1)
 	move.b	#ObjID_TailsTails,(Tails_Tails_Cutscene+id).w ; load Obj05 (Tails' tails) at $FFFFB080
 	move.w	a1,(Tails_Tails_Cutscene+parent).w
@@ -18204,7 +18204,7 @@ ScrollVerti:
 	; rolling, and vice versa. Not even Sonic 3 & Knuckles fixed this.
 	; To fix this, just adjust the subtraction to suit Tails (who is four
 	; pixels shorter).
-	cmpi.b	#$02,id(a0)
+	cmpi.b	#ObjID_Tails,id(a0)
 	bne.s	.notRolling
 	addq.w	#4,d0
     endif
@@ -25592,7 +25592,7 @@ Ani_objDC:	offsetTable
 ; ---------------------------------------------------------------------------
 ; Sprite_12974: Obj_Monitor:
 Obj26:
-	jmp	(DeleteObject).l
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	routine(a0),d0
 	move.w	Obj26_Index(pc,d0.w),d1
@@ -26304,7 +26304,7 @@ Ani_obj26:	offsetTable
 		offsetTableEntry.w Ani_obj26_Static		;  0
 		offsetTableEntry.w Ani_obj26_Sonic		;  1
 		offsetTableEntry.w Ani_obj26_Tails		;  2
-		offsetTableEntry.w Ani_obj26_Tails		;  3
+		offsetTableEntry.w Ani_obj26_Eggman		;  3
 		offsetTableEntry.w Ani_obj26_Ring		;  4
 		offsetTableEntry.w Ani_obj26_Shoes		;  5
 		offsetTableEntry.w Ani_obj26_Shield		;  6
@@ -30012,7 +30012,7 @@ ObjPtr_FallingOil:	dc.l Obj1C	; Bridge stake in Emerald Hill Zone and Hill Top Z
 ObjPtr_BlueBalls:	dc.l Obj1D	; Blue balls in CPZ (jumping droplets hazard)
 ObjPtr_CPZSpinTube:	dc.l Obj1E	; Spin tube from CPZ
 ObjPtr_CollapsPform:	dc.l Obj1F	; Collapsing platform from ARZ, MCZ and OOZ (and MZ, SLZ and SBZ)
-ObjPtr_LavaBubble:	dc.l DeleteObject	; Lava bubble from Hill Top Zone (boss weapon)
+ObjPtr_LavaBubble:	dc.l Obj20	; Lava bubble from Hill Top Zone (boss weapon)
 ObjPtr_2PResults:	dc.l Obj21	; 2P results
 ObjPtr_ArrowShooter:	dc.l Obj22	; Arrow shooter from ARZ
 ObjPtr_FallingPillar:	dc.l Obj23	; Pillar that drops its lower part from ARZ
@@ -30020,7 +30020,7 @@ ObjPtr_ARZBubbles:	dc.l Obj24	; Bubbles in Aquatic Ruin Zone
 ObjPtr_Ring:		dc.l Obj25	; A ring
 ObjPtr_Monitor:		dc.l Obj26	; Monitor
 ObjPtr_Explosion:	dc.l Obj27	; An explosion, giving off an animal and 100 points
-ObjPtr_Animal:		dc.l DeleteObject	; Animal and the 100 points from a badnik
+ObjPtr_Animal:		dc.l Obj28	; Animal and the 100 points from a badnik
 ObjPtr_Points:		dc.l Obj29	; "100 points" text
 ObjPtr_Stomper:		dc.l Obj2A	; Stomper from MCZ
 ObjPtr_RisingPillar:	dc.l Obj2B	; Rising pillar from ARZ
@@ -30056,26 +30056,26 @@ ObjPtr_OOZBall:		dc.l Obj46	; Ball from OOZ (unused, beta leftover)
 ObjPtr_Button:		dc.l Obj47	; Button
 ObjPtr_LauncherBall:	dc.l Obj48	; Round ball thing from OOZ that fires you off in a different direction
 ObjPtr_EHZWaterfall:	dc.l Obj49	; Waterfall from EHZ
-ObjPtr_Octus:		dc.l DeleteObject	; Octus (octopus badnik) from OOZ
+ObjPtr_Octus:		dc.l Obj4A	; Octus (octopus badnik) from OOZ
 ObjPtr_Buzzer:		dc.l Obj4B	; Buzzer (Buzz bomber) from EHZ
 			dc.l ObjNull	; Used to be the "BBat" badnik from HPZ
 			dc.l ObjNull	; Used to be the "Stego" badnik
 			dc.l ObjNull	; Used to be the "Gator" badnik
 			dc.l ObjNull	; Used to be the "Redz" badnik from HPZ
-ObjPtr_Aquis:		dc.l DeleteObject	; Aquis (seahorse badnik) from OOZ
-ObjPtr_CNZBoss:		dc.l DeleteObject	; CNZ boss
-ObjPtr_HTZBoss:		dc.l DeleteObject	; HTZ boss ; Used to be the "BFish" badnik
-ObjPtr_MTZBossOrb:	dc.l DeleteObject	; Shield orbs that surround MTZ boss
-ObjPtr_MTZBoss:		dc.l DeleteObject	; MTZ boss
-ObjPtr_OOZBoss:		dc.l DeleteObject	; OOZ boss
-ObjPtr_EHZBoss:		dc.l DeleteObject	; EHZ boss
-ObjPtr_MCZBoss:		dc.l DeleteObject	; MCZ boss
+ObjPtr_Aquis:		dc.l Obj50	; Aquis (seahorse badnik) from OOZ
+ObjPtr_CNZBoss:		dc.l Obj51	; CNZ boss
+ObjPtr_HTZBoss:		dc.l Obj52	; HTZ boss ; Used to be the "BFish" badnik
+ObjPtr_MTZBossOrb:	dc.l Obj53	; Shield orbs that surround MTZ boss
+ObjPtr_MTZBoss:		dc.l Obj54	; MTZ boss
+ObjPtr_OOZBoss:		dc.l Obj55	; OOZ boss
+ObjPtr_EHZBoss:		dc.l Obj56	; EHZ boss
+ObjPtr_MCZBoss:		dc.l Obj57	; MCZ boss
 ObjPtr_BossExplosion:	dc.l Obj58	; Boss explosion
 ObjPtr_SSEmerald:	dc.l Obj59	; Emerald from Special Stage
 ObjPtr_SSMessage:	dc.l Obj5A	; Messages/checkpoint from Special Stage
 ObjPtr_SSRingSpill:	dc.l Obj5B	; Ring spray/spill in Special Stage
-ObjPtr_Masher:		dc.l DeleteObject	; Masher (jumping piranha fish badnik) from EHZ
-ObjPtr_CPZBoss:		dc.l DeleteObject	; CPZ boss
+ObjPtr_Masher:		dc.l Obj5C	; Masher (jumping piranha fish badnik) from EHZ
+ObjPtr_CPZBoss:		dc.l Obj5D	; CPZ boss
 ObjPtr_SSHUD:		dc.l Obj5E	; HUD from Special Stage
 ObjPtr_StartBanner:
 ObjPtr_EndingController:dc.l Obj5F	; Start banner/"Ending controller" from Special Stage
@@ -30125,44 +30125,44 @@ ObjPtr_LauncherSpring:	dc.l Obj85	; Spring from CNZ that you hold jump on to pul
 ObjPtr_Flipper:		dc.l Obj86	; Flipper from CNZ
 ObjPtr_SSNumberOfRings:	dc.l Obj87	; Number of rings in Special Stage
 ObjPtr_SSTailsTails:	dc.l Obj88	; Tails' tails in Special Stage
-ObjPtr_ARZBoss:		dc.l DeleteObject	; ARZ boss
+ObjPtr_ARZBoss:		dc.l Obj89	; ARZ boss
 			dc.l Obj8A	; Sonic Team Presents/Credits (seemingly unused leftover from S1)
 ObjPtr_WFZPalSwitcher:	dc.l Obj8B	; Cycling palette switcher from Wing Fortress Zone
-ObjPtr_Whisp:		dc.l DeleteObject	; Whisp (blowfly badnik) from ARZ
+ObjPtr_Whisp:		dc.l Obj8C	; Whisp (blowfly badnik) from ARZ
 ObjPtr_GrounderInWall:	dc.l Obj8D	; Grounder in wall, from ARZ
 ObjPtr_GrounderInWall2:	dc.l Obj8D	; Obj8E = Obj8D
 ObjPtr_GrounderWall:	dc.l Obj8F	; Wall behind which Grounder hides, from ARZ
 ObjPtr_GrounderRocks:	dc.l Obj90	; Rocks thrown by Grounder behind wall, from ARZ
-ObjPtr_ChopChop:	dc.l DeleteObject	; Chop Chop (piranha/shark badnik) from ARZ
-ObjPtr_Spiker:		dc.l DeleteObject	; Spiker (drill badnik) from HTZ
+ObjPtr_ChopChop:	dc.l Obj91	; Chop Chop (piranha/shark badnik) from ARZ
+ObjPtr_Spiker:		dc.l Obj92	; Spiker (drill badnik) from HTZ
 ObjPtr_SpikerDrill:	dc.l Obj93	; Drill thrown by Spiker from HTZ
-ObjPtr_Rexon:		dc.l DeleteObject	; Rexon (lava snake badnik), from HTZ
-ObjPtr_Sol:		dc.l DeleteObject	; Sol (fireball-throwing orbit badnik) from HTZ
+ObjPtr_Rexon:		dc.l Obj94	; Rexon (lava snake badnik), from HTZ
+ObjPtr_Sol:		dc.l Obj95	; Sol (fireball-throwing orbit badnik) from HTZ
 ObjPtr_Rexon2:		dc.l Obj94	; Obj96 = Obj94
 ObjPtr_RexonHead:	dc.l Obj97	; Rexon's head, from HTZ
 ObjPtr_Projectile:	dc.l Obj98	; Projectile with optional gravity (EHZ coconut, CPZ spiny, etc.)
-ObjPtr_Nebula:		dc.l DeleteObject	; Nebula (bomber badnik) from SCZ
-ObjPtr_Turtloid:	dc.l DeleteObject	; Turtloid (turtle badnik) from Sky Chase Zone
+ObjPtr_Nebula:		dc.l Obj99	; Nebula (bomber badnik) from SCZ
+ObjPtr_Turtloid:	dc.l Obj9A	; Turtloid (turtle badnik) from Sky Chase Zone
 ObjPtr_TurtloidRider:	dc.l Obj9B	; Turtloid rider from Sky Chase Zone
 ObjPtr_BalkiryJet:	dc.l Obj9C	; Balkiry's jet from Sky Chase Zone
-ObjPtr_Coconuts:	dc.l DeleteObject	; Coconuts (monkey badnik) from EHZ
-ObjPtr_Crawlton:	dc.l DeleteObject	; Crawlton (snake badnik) from MCZ
-ObjPtr_Shellcracker:	dc.l DeleteObject	; Shellcraker (crab badnik) from MTZ
+ObjPtr_Coconuts:	dc.l Obj9D	; Coconuts (monkey badnik) from EHZ
+ObjPtr_Crawlton:	dc.l Obj9E	; Crawlton (snake badnik) from MCZ
+ObjPtr_Shellcracker:	dc.l Obj9F	; Shellcraker (crab badnik) from MTZ
 ObjPtr_ShellcrackerClaw:dc.l ObjA0	; Shellcracker's claw from MTZ
 ObjPtr_Slicer:		dc.l ObjA1	; Slicer (praying mantis dude) from MTZ
 ObjPtr_SlicerPincers:	dc.l ObjA2	; Slicer's pincers from MTZ
-ObjPtr_Flasher:		dc.l DeleteObject	; Flasher (firefly/glowbug badnik) from MCZ
-ObjPtr_Asteron:		dc.l DeleteObject	; Asteron (exploding starfish badnik) from MTZ
-ObjPtr_Spiny:		dc.l DeleteObject	; Spiny (crawling badnik) from CPZ
+ObjPtr_Flasher:		dc.l ObjA3	; Flasher (firefly/glowbug badnik) from MCZ
+ObjPtr_Asteron:		dc.l ObjA4	; Asteron (exploding starfish badnik) from MTZ
+ObjPtr_Spiny:		dc.l ObjA5	; Spiny (crawling badnik) from CPZ
 ObjPtr_SpinyOnWall:	dc.l ObjA6	; Spiny (on wall) from CPZ
-ObjPtr_Grabber:		dc.l DeleteObject	; Grabber (spider badnik) from CPZ
+ObjPtr_Grabber:		dc.l ObjA7	; Grabber (spider badnik) from CPZ
 ObjPtr_GrabberLegs:	dc.l ObjA8	; Grabber's legs from CPZ
 ObjPtr_GrabberBox:	dc.l ObjA9	; The little hanger box thing a Grabber's string comes out of
 ObjPtr_GrabberString:	dc.l ObjAA	; The thin white string a Grabber hangs from
 			dc.l ObjAB	; Unknown (maybe unused?)
-ObjPtr_Balkiry:		dc.l DeleteObject	; Balkiry (jet badnik) from SCZ
+ObjPtr_Balkiry:		dc.l ObjAC	; Balkiry (jet badnik) from SCZ
 ObjPtr_CluckerBase:	dc.l ObjAD	; Clucker's base from WFZ
-ObjPtr_Clucker:		dc.l DeleteObject	; Clucker (chicken badnik) from WFZ
+ObjPtr_Clucker:		dc.l ObjAE	; Clucker (chicken badnik) from WFZ
 ObjPtr_MechaSonic:	dc.l ObjAF	; Mecha Sonic / Silver Sonic from DEZ
 ObjPtr_SonicOnSegaScr:	dc.l ObjB0	; Sonic on the Sega screen
 ObjPtr_SegaHideTM:	dc.l ObjB1	; Object that hides TM symbol on JP region
@@ -30179,16 +30179,16 @@ ObjPtr_WFZWheel:	dc.l ObjBA	; Wheel from WFZ
 ObjPtr_WFZShipFire:	dc.l ObjBC	; Fire coming out of Robotnik's ship in WFZ
 ObjPtr_SmallMetalPform:	dc.l ObjBD	; Ascending/descending metal platforms from WFZ
 ObjPtr_LateralCannon:	dc.l ObjBE	; Lateral cannon (temporary platform that pops in/out) from WFZ
-ObjPtr_WFZStick:	dc.l DeleteObject	; Rotaty-stick badnik from WFZ
+ObjPtr_WFZStick:	dc.l ObjBF	; Rotaty-stick badnik from WFZ
 ObjPtr_SpeedLauncher:	dc.l ObjC0	; Speed launcher from WFZ
 ObjPtr_BreakablePlating:dc.l ObjC1	; Breakable plating from WFZ / what Sonic hangs onto on the back of Robotnik's getaway ship
 ObjPtr_Rivet:		dc.l ObjC2	; Rivet thing you bust to get into ship at the end of WFZ
 ObjPtr_TornadoSmoke:	dc.l ObjC3	; Plane's smoke from WFZ
 ObjPtr_TornadoSmoke2:	dc.l ObjC3 	; ObjC4 = ObjC3
-ObjPtr_WFZBoss:		dc.l DeleteObject	; WFZ boss
+ObjPtr_WFZBoss:		dc.l ObjC5	; WFZ boss
 ObjPtr_Eggman:		dc.l ObjC6	; Eggman
-ObjPtr_Eggrobo:		dc.l DeleteObject	; Eggrobo (final boss) from Death Egg
-ObjPtr_Crawl:		dc.l DeleteObject	; Crawl (shield badnik) from CNZ
+ObjPtr_Eggrobo:		dc.l ObjC7	; Eggrobo (final boss) from Death Egg
+ObjPtr_Crawl:		dc.l ObjC8	; Crawl (shield badnik) from CNZ
 ObjPtr_TtlScrPalChanger:dc.l ObjC9	; "Palette changing handler" from title screen
 ObjPtr_CutScene:	dc.l ObjCA	; Cut scene at end of game
 ObjPtr_EndingSeqClouds:	dc.l ObjCB	; Background clouds from ending sequence
@@ -34732,7 +34732,6 @@ loc_1922C:
 	addq.b	#2,routine(a0) ; => Obj0D_Main
 	bsr.w	Adjust2PArtPointer
 	move.b	#1<<render_flags.level_fg,render_flags(a0)
-	move.b	#1,mapping_frame(a0)
 	move.b	#$18,width_pixels(a0)
 	move.b	#4,priority(a0)
 	move.w	#$3C3C,(Loser_Time_Left).w
@@ -35032,11 +35031,11 @@ Ani_obj0D:	offsetTable
 		offsetTableEntry.w byte_195A9	; 2
 		offsetTableEntry.w byte_195B7	; 3
 		offsetTableEntry.w byte_195BA	; 4
-byte_19598:	dc.b	$0F, $01, $FF
+byte_19598:	dc.b	$0F, $02, $FF
 	rev02even
-byte_1959B:	dc.b	$01, $01, $03, $04, $05, $01, $03, $04, $05, $00, $03, $04, $05, $FF
+byte_1959B:	dc.b	$01, $02, $03, $04, $05, $01, $03, $04, $05, $00, $03, $04, $05, $FF
 	rev02even
-byte_195A9:	dc.b	$01, $01, $03, $04, $05, $01, $03, $04, $05, $00, $03, $04, $05, $FF
+byte_195A9:	dc.b	$01, $02, $03, $04, $05, $01, $03, $04, $05, $00, $03, $04, $05, $FF
 	rev02even
 byte_195B7:	dc.b	$0F, $00, $FF
 	rev02even
@@ -37301,13 +37300,13 @@ return_1A972:
 
 ; loc_1A974:
 Sonic_LevelBound:
+	move.w	#1,(Player_option).w
 	move.l	x_pos(a0),d1
 	move.w	x_vel(a0),d0
 	ext.l	d0
 	asl.l	#8,d0
 	add.l	d0,d1
 	swap	d1
-	move.w	#1,(Player_option).w
 	cmpi.w	#chemical_plant_zone_act_1,(Current_ZoneAndAct).w
 	bne.s	.notCPZShort
 	cmpi.w	#$1000,d1
@@ -83358,10 +83357,10 @@ loc_3D9D6:
 	; preventing the music from fading out as it should.
 	jsrto	JmpTo12_PlaySound
     endif
-	move.b	#1,($FFFFFE60).w
+	move.b	#1,($FFFFF660).w
 	move.w	#emerald_hill_zone_act_1,(Current_ZoneAndAct).w
 	clr.b	(Last_star_pole_hit).w
-	move.w	#1,(Level_Inactive_flag).w
+	move.w	#1,(Level_Inactive_flag).w ; => EndingSequence
 	jmpto	JmpTo65_DeleteObject
 ; ===========================================================================
 
@@ -92217,6 +92216,11 @@ EndOfRom:
 	if MOMPASS=2
 		; "About" because it will be off by the same amount that Size_of_Snd_driver_guess is incorrect (if you changed it), and because I may have missed a small amount of internal padding somewhere
 		message "ROM size is $\{EndOfRom-StartOfRom} bytes (\{(EndOfRom-StartOfRom)/1024.0} KiB). About $\{paddingSoFar} bytes are padding. "
+	endif
+	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
+	shared movewZ80CompSize
+	END
+re padding. "
 	endif
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
