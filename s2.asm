@@ -37348,6 +37348,11 @@ Sonic_LevelBound:
 	bne.w	Ghost_End_Skip
 	move.b	#1,($FFFFF661).w
 	move.w	x_pos(a0),(Camera_Max_X_pos).w
+	move.b	#$0D,($FFFFB840).w
+	move.w	d1,d2
+	addi.w	#80,d2
+	move.w	d2,($FFFFB840+x_pos).w
+	move.w	y_pos(a0),($FFFFB840+y_pos).w
 	move.b	#$02,($FFFFB040).w
 	move.w	d1,d2
 	subi.w	#36,d2
@@ -61720,6 +61725,7 @@ Obj5D_hover_counter	= objoff_3F
 
 ; Sprite_2D734:
 Obj5D:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	routine(a0),d0
 	move.w	Obj5D_Index(pc,d0.w),d1
@@ -63475,6 +63481,10 @@ Obj5D_MapUnc_2EEA0:	include "mappings/sprite/obj5D_d.asm"
 ; ----------------------------------------------------------------------------
 ; Sprite_2EF18:
 Obj56:
+	move.w	#chemical_plant_zone_act_1,(Current_ZoneAndAct).w
+	clr.b	(Last_star_pole_hit).w
+	move.w	#1,(Level_Inactive_flag).w
+	rts
 	moveq	#0,d0
 	move.b	routine(a0),d0
 	move.w	Obj56_Index(pc,d0.w),d1
@@ -64385,6 +64395,7 @@ Obj56_MapUnc_2FAF8:	include "mappings/sprite/obj56_c.asm"
 ; ----------------------------------------------------------------------------
 ; Sprite_2FC50:
 Obj52:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	boss_subtype(a0),d0
 	move.w	Obj52_Index(pc,d0.w),d1
@@ -65009,6 +65020,7 @@ obj89_arrow_parent		= objoff_38	; address of main vehicle
 
 ; Sprite_30480:
 Obj89:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	boss_subtype(a0),d0
 	move.w	Obj89_Index(pc,d0.w),d1
@@ -66052,6 +66064,7 @@ obj57_sub5_y_pos2	= objoff_3A	; longword - y_pos of second digger when falling d
 ; ----------------------------------------------------------------------------
 ; Sprite_30FA4:
 Obj57:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	boss_subtype(a0),d0
 	move.w	Obj57_Index(pc,d0.w),d1
@@ -66715,6 +66728,7 @@ Obj57_MapUnc_316EC:	include "mappings/sprite/obj57.asm"
 ; ----------------------------------------------------------------------------
 ; Sprite_318F0:
 Obj51:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	boss_subtype(a0),d0
 	move.w	Obj51_Index(pc,d0.w),d1
@@ -67460,6 +67474,7 @@ Obj51_MapUnc_320EA:	include "mappings/sprite/obj51.asm"
 ; ----------------------------------------------------------------------------
 ; Sprite_32288:
 Obj54:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	boss_subtype(a0),d0
 	move.w	Obj54_Index(pc,d0.w),d1
@@ -77752,6 +77767,7 @@ ObjAD_Obj98_MapUnc_395B4:	include "mappings/sprite/objAE.asm"
 ; ----------------------------------------------------------------------------
 ; Sprite_3972C:
 ObjAF:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	routine(a0),d0
 	move.w	ObjAF_Index(pc,d0.w),d1
@@ -82799,6 +82815,7 @@ ObjC8_MapUnc_3D450:	include "mappings/sprite/objC8.asm"
 ; ----------------------------------------------------------------------------
 ; Sprite_3D4C8:
 ObjC7:
+	jmp	DeleteObject
 	moveq	#0,d0
 	move.b	routine(a0),d0
 	move.w	ObjC7_Index(pc,d0.w),d1
@@ -92220,20 +92237,7 @@ EndOfRom:
 	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
 	shared movewZ80CompSize
 	END
-re padding. "
-	endif
-	; share these symbols externally (WARNING: don't rename, move or remove these labels!)
-	shared movewZ80CompSize
-	END
-	include "sound/sfx/EC - Teleport.asm"
-Sound6D:	include "sound/sfx/ED - Error.asm"
-Sound6E:	include "sound/sfx/EE - Mecha Sonic Buzz.asm"
-Sound6F:	include "sound/sfx/EF - Large Laser.asm"
-Sound70:	include "sound/sfx/F0 - Oil Slide.asm"
-
-	finishBank
-
-; end of 'ROM'
+ 'ROM'
 	if padToPowerOfTwo && (*-StartOfRom)&(*-StartOfRom-1)
 		cnop	-1,2<<lastbit(*-StartOfRom-1)
 		dc.b	$00
